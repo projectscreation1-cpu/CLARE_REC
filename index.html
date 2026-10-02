@@ -4,104 +4,242 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#1f5eff" />
   <title>CLARUS Recording</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%231f5eff%22/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset="1" stop-color="#7a3cff"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><path d="M8 17c2.5 3 5 4.5 8 4.5s5.5-1.5 8-4.5c-2.5-1.6-5-2.4-8-2.4S10.5 15.4 8 17z" fill="#fff"/><path d="M8 17c2.6-.9 5.3-1.3 8-1.3s5.4.4 8 1.3" stroke="url(#lg)" stroke-width="1.4" fill="none"/></svg>
+      </span>
+      <span class="logo-text">CLARUS</span>
+      <ol class="stepper" id="stepper" aria-label="Progress">
+        <li data-step="screen-welcome" class="current"><b>1</b><span>Details</span></li>
+        <li data-step="screen-check"><b>2</b><span>Camera</span></li>
+        <li data-step="screen-record"><b>3</b><span>Record</span></li>
+        <li data-step="screen-done"><b>4</b><span>Done</span></li>
+      </ol>
+    </div>
+  </header>
+
   <main id="app">
 
     <!-- SCREEN 1: WELCOME + CONSENT -->
     <section id="screen-welcome" class="screen active">
-      <header class="brand">
-        <h1>CLARUS</h1>
-        <p class="sub">Lip-reading fairness study · Hindustan Institute of Technology and Science, AI &amp; DS</p>
+      <header class="hero">
+        <span class="pill">B.Tech final-year research · AI &amp; Data Science</span>
+        <h1>Help build <span class="grad">fairer</span> lip-reading AI</h1>
+        <p class="lead">CLARUS studies whether visual speech recognition works equally well for everyone, whatever their skin tone, facial hair, glasses, lighting or head angle. Lend us your voice (and your lips) for three minutes.</p>
+        <p class="sub">Hindustan Institute of Technology and Science · Department of AI &amp; DS</p>
+
+        <div class="stats">
+          <div class="stat"><strong>5</strong><span>short sentences</span></div>
+          <div class="stat"><strong>~3</strong><span>minutes total</span></div>
+          <div class="stat"><strong>12s</strong><span>max per clip</span></div>
+          <div class="stat"><strong>0</strong><span>trackers or ads</span></div>
+        </div>
+        <a class="btn primary hero-cta" href="#consent-card">Take part now ↓</a>
       </header>
 
-      <div class="intro">
-        <p><strong>What is CLARUS?</strong> A final-year research project checking whether AI lip-reading works equally well for everyone, regardless of skin tone, facial hair, lighting or head angle.</p>
-        <p><strong>Why we collect data:</strong> existing datasets are mostly BBC and TED footage and don't represent diverse, real speakers.</p>
-        <p><strong>Why you matter:</strong> every recording helps us measure and reduce bias.</p>
-        <p class="muted">You'll read 5 short sentences aloud to your camera. It takes about 3 minutes.</p>
-      </div>
+      <section class="block">
+        <h2 class="block-title">Why this research matters</h2>
+        <div class="cards three">
+          <article class="card">
+            <div class="ic" aria-hidden="true">🎯</div>
+            <h3>The problem</h3>
+            <p>Most lip-reading datasets are built from BBC and TED footage. Their speakers don't reflect the diversity of real people, so models can quietly perform worse for some groups.</p>
+          </article>
+          <article class="card">
+            <div class="ic" aria-hidden="true">🔬</div>
+            <h3>What we measure</h3>
+            <p>We compare recognition accuracy across self-reported skin tone, gender, age, facial hair and glasses, plus measured lighting, to find where bias appears.</p>
+          </article>
+          <article class="card">
+            <div class="ic" aria-hidden="true">🤝</div>
+            <h3>Why you matter</h3>
+            <p>Every clip adds a real, diverse speaker. Your recordings help us measure bias honestly and test ways to reduce it.</p>
+          </article>
+        </div>
+      </section>
 
-      <form id="consent-form" novalidate>
-        <label class="field">Full name
-          <input id="f-name" type="text" autocomplete="name" maxlength="80" required />
-        </label>
-        <label class="field">Roll number / ID
-          <input id="f-roll" type="text" autocomplete="off" maxlength="40" required />
-        </label>
+      <section class="block">
+        <h2 class="block-title">How it works</h2>
+        <ol class="timeline">
+          <li><span class="tl-n">1</span><div><h3>Fill in your details</h3><p>A short form with self-reported demographics, used only to measure fairness across groups.</p></div></li>
+          <li><span class="tl-n">2</span><div><h3>Camera check</h3><p>We check in your browser that exactly one face is visible, the lighting is good and you're holding steady.</p></div></li>
+          <li><span class="tl-n">3</span><div><h3>Read 5 sentences</h3><p>Each sentence appears on screen. Tap record, wait for the 3-2-1 countdown, read it aloud, then tap stop.</p></div></li>
+          <li><span class="tl-n">4</span><div><h3>Automatic check &amp; upload</h3><p>Your speech is checked against the sentence, then the clip is uploaded privately. Re-record any clip you're unhappy with.</p></div></li>
+        </ol>
+      </section>
 
-        <label class="field">Age group
-          <select id="f-age" required>
-            <option value="">Select…</option>
-            <option>Under 18</option><option>18-24</option><option>25-34</option>
-            <option>35-44</option><option>45-54</option><option>55+</option>
-          </select>
-        </label>
+      <section class="block">
+        <h2 class="block-title">Tips for a great recording</h2>
+        <ul class="tips">
+          <li><span aria-hidden="true">💡</span><div><strong>Face the light.</strong> A window or lamp in front of you, not behind.</div></li>
+          <li><span aria-hidden="true">📱</span><div><strong>Hold steady at eye level.</strong> Prop your phone up if you can.</div></li>
+          <li><span aria-hidden="true">👄</span><div><strong>Keep your mouth visible.</strong> No hands, masks or mic in front of it.</div></li>
+          <li><span aria-hidden="true">🗣️</span><div><strong>Speak at a natural pace.</strong> Clear, normal volume, no need to exaggerate.</div></li>
+          <li><span aria-hidden="true">🤫</span><div><strong>Find a quiet spot.</strong> Background noise makes the speech check harder.</div></li>
+          <li><span aria-hidden="true">🌐</span><div><strong>Use Chrome or Edge</strong> for automatic speech checking. Safari works too.</div></li>
+        </ul>
+      </section>
 
-        <label class="field">Gender (self-reported)
-          <select id="f-gender" required>
-            <option value="">Select…</option>
-            <option>Female</option><option>Male</option><option>Other / prefer to self-describe</option>
-          </select>
-        </label>
+      <section class="block privacy">
+        <h2 class="block-title">Your privacy</h2>
+        <ul class="checks">
+          <li>Clips go to a <strong>private</strong> storage bucket. No public links, no listing, no downloads by visitors.</li>
+          <li>Used <strong>only</strong> to train and test a lip-reading model for this academic project.</li>
+          <li>Every clip has a notice burned into the video stating it is for project use only.</li>
+          <li>No analytics, cookies or third-party trackers on this page.</li>
+          <li>You can ask the project team to <strong>delete</strong> your recordings at any time.</li>
+        </ul>
+      </section>
 
-        <label class="field">Skin tone (self-reported)
-          <select id="f-skin" required>
-            <option value="">Select…</option>
-            <option>Very light</option><option>Light</option><option>Medium</option>
-            <option>Tan</option><option>Brown</option><option>Dark</option>
-          </select>
-        </label>
+      <section class="card form-card" id="consent-card">
+        <div class="form-head">
+          <h2>Your details</h2>
+          <p class="muted">All fields are required. Demographics are self-reported; choose whatever describes you best.</p>
+        </div>
 
-        <label class="field">Facial hair
-          <select id="f-facial" required>
-            <option value="">Select…</option>
-            <option>None</option><option>Light</option><option>Beard/moustache</option>
-          </select>
-        </label>
+        <form id="consent-form" novalidate>
+          <fieldset class="group">
+            <legend>About you</legend>
+            <div class="grid2">
+              <label class="field">Full name
+                <input id="f-name" type="text" autocomplete="name" maxlength="80" placeholder="e.g. Priya Kumar" required />
+              </label>
+              <label class="field">Roll number / ID
+                <input id="f-roll" type="text" autocomplete="off" maxlength="40" placeholder="e.g. 21AD042" required />
+              </label>
+              <label class="field">Age group
+                <select id="f-age" required>
+                  <option value="">Select…</option>
+                  <option>Under 18</option><option>18-24</option><option>25-34</option>
+                  <option>35-44</option><option>45-54</option><option>55+</option>
+                </select>
+              </label>
+              <label class="field">Gender (self-reported)
+                <select id="f-gender" required>
+                  <option value="">Select…</option>
+                  <option>Female</option><option>Male</option><option>Other / prefer to self-describe</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
 
-        <fieldset class="field">
-          <legend>Wears glasses</legend>
-          <div class="seg">
-            <label><input type="radio" name="glasses" value="Yes" required /> <span>Yes</span></label>
-            <label><input type="radio" name="glasses" value="No" /> <span>No</span></label>
-          </div>
-        </fieldset>
+          <fieldset class="group">
+            <legend>Appearance <span class="hint">helps us measure fairness</span></legend>
+            <div class="grid2">
+              <label class="field">Skin tone (self-reported)
+                <select id="f-skin" required>
+                  <option value="">Select…</option>
+                  <option>Very light</option><option>Light</option><option>Medium</option>
+                  <option>Tan</option><option>Brown</option><option>Dark</option>
+                </select>
+              </label>
+              <label class="field">Facial hair
+                <select id="f-facial" required>
+                  <option value="">Select…</option>
+                  <option>None</option><option>Light</option><option>Beard/moustache</option>
+                </select>
+              </label>
+            </div>
+            <fieldset class="field">
+              <legend>Wears glasses</legend>
+              <div class="seg">
+                <label><input type="radio" name="glasses" value="Yes" required /> <span>Yes</span></label>
+                <label><input type="radio" name="glasses" value="No" /> <span>No</span></label>
+              </div>
+            </fieldset>
+          </fieldset>
 
-        <label class="check">
-          <input id="f-consent" type="checkbox" required />
-          <span>I agree to be recorded for the CLARUS academic research project. My video will only be used to train and test a lip-reading AI system, will not be shared publicly, and I can request deletion by contacting the team.</span>
-        </label>
+          <fieldset class="group">
+            <legend>Consent</legend>
+            <label class="check">
+              <input id="f-consent" type="checkbox" required />
+              <span>I agree to be recorded for the CLARUS academic research project. My video will only be used to train and test a lip-reading AI system, will not be shared publicly, and I can request deletion by contacting the team.</span>
+            </label>
 
-        <label class="check" id="guardian-wrap" hidden>
-          <input id="f-guardian" type="checkbox" />
-          <span>A parent/guardian has given permission for this recording.</span>
-        </label>
+            <label class="check" id="guardian-wrap" hidden>
+              <input id="f-guardian" type="checkbox" />
+              <span>A parent/guardian has given permission for this recording.</span>
+            </label>
+          </fieldset>
 
-        <button id="btn-start" type="submit" class="btn primary" disabled>Start</button>
-      </form>
+          <button id="btn-start" type="submit" class="btn primary" disabled>Start camera check →</button>
+          <p class="fine">You'll be asked for camera and microphone permission on the next step.</p>
+        </form>
+      </section>
+
+      <section class="block">
+        <h2 class="block-title">Frequently asked questions</h2>
+        <div class="faq">
+          <details>
+            <summary>What exactly is recorded?</summary>
+            <p>A 640×480 video of your face at 25 fps with audio, up to 12 seconds per sentence. We also save your form answers, the sentence text, the speech transcript, average face brightness and basic device info (browser and camera resolution).</p>
+          </details>
+          <details>
+            <summary>Why do you need my skin tone, gender and age?</summary>
+            <p>The whole point of CLARUS is to check whether lip-reading accuracy differs between groups. Without these labels we can't measure fairness. They are self-reported and you choose the answer.</p>
+          </details>
+          <details>
+            <summary>Why was my clip rejected?</summary>
+            <p>Each clip is checked in your browser: if less than half of the sentence's words were heard, nothing was heard, or inappropriate language was detected, the clip isn't uploaded and you'll be asked to record again. Read the sentence exactly as shown in a quiet place.</p>
+          </details>
+          <details>
+            <summary>The camera check won't turn green.</summary>
+            <p>Make sure only your face is in view, move toward a light source facing you, and hold the device still for a moment. Very bright backlighting (a window behind you) is the most common cause.</p>
+          </details>
+          <details>
+            <summary>Which browsers work?</summary>
+            <p>Chrome and Edge on Android or desktop give the best experience, including automatic speech checking. Safari on iPhone works too; in browsers without speech recognition (e.g. Firefox) clips are uploaded and flagged for manual review.</p>
+          </details>
+          <details>
+            <summary>Can I re-record a sentence?</summary>
+            <p>Yes. After each upload you can tap <em>Re-record This Sentence</em>; the new clip replaces the old one.</p>
+          </details>
+          <details>
+            <summary>How do I get my data deleted?</summary>
+            <p>Contact the CLARUS project team with your name and roll number and we'll remove your folder from storage.</p>
+          </details>
+        </div>
+      </section>
     </section>
 
     <!-- SCREEN 2: CAMERA CHECK -->
     <section id="screen-check" class="screen">
-      <h2>Camera check</h2>
-      <p class="muted">Sit facing the camera in good light and hold your device steady.</p>
+      <div class="screen-head">
+        <span class="pill">Step 2 of 4</span>
+        <h2>Camera check</h2>
+        <p class="muted">Sit facing the camera in good light and hold your device steady. When all three checks turn green, continue.</p>
+      </div>
       <div class="stage" data-stage></div>
       <div id="check-status" class="status" role="status"></div>
-      <button id="btn-continue" class="btn primary" disabled>Continue</button>
+      <ul class="mini-tips">
+        <li>Light in front of you, not behind</li>
+        <li>Face fills the middle of the frame</li>
+        <li>Only one person visible</li>
+      </ul>
+      <button id="btn-continue" class="btn primary" disabled>Continue to recording →</button>
     </section>
 
     <!-- SCREEN 3: RECORDING -->
     <section id="screen-record" class="screen">
       <div class="rec-head">
         <span id="rec-counter">Sentence 1 of 5</span>
-        <span id="rec-set" class="muted"></span>
+        <span id="rec-set" class="tag"></span>
       </div>
       <div class="progress"><div id="rec-progress"></div></div>
-      <p id="rec-sentence" class="sentence"></p>
+      <ol id="rec-dots" class="dots" aria-label="Sentences"></ol>
+      <div class="sentence-card">
+        <span class="sentence-label">Read this aloud</span>
+        <p id="rec-sentence" class="sentence"></p>
+      </div>
       <div class="stage" data-stage></div>
       <div id="rec-status" class="status" role="status" aria-live="polite"></div>
       <div id="rec-actions" class="actions">
@@ -115,10 +253,17 @@
 
     <!-- SCREEN 4: DONE -->
     <section id="screen-done" class="screen">
-      <div class="done">
-        <div class="tick" aria-hidden="true">✓</div>
+      <div class="done-wrap">
+        <div class="tick" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="44" height="44"><path d="M14 27l8 8 16-17" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <h2>Thank you!</h2>
         <p>All 5 recordings were uploaded successfully. Your contribution helps make lip-reading AI fairer for everyone.</p>
+        <ul id="done-summary" class="summary"></ul>
+        <div class="card next-card">
+          <h3>What happens next?</h3>
+          <p>Your clips join a dataset of diverse speakers. We'll use them to measure how a lip-reading model performs across different groups and test techniques that close any gaps.</p>
+        </div>
         <p class="muted">The camera has been switched off. You can close this page.</p>
       </div>
     </section>
@@ -128,16 +273,21 @@
       <div class="frame">
         <video id="preview" autoplay muted playsinline></video>
         <canvas id="rec-canvas" aria-hidden="true"></canvas>
+        <div class="face-guide" aria-hidden="true"></div>
         <div id="overlay" class="overlay" hidden></div>
         <div id="timer" class="timer" hidden></div>
       </div>
       <ul class="checklist" id="checklist">
-        <li data-check="one"><i></i>Exactly one person in frame</li>
-        <li data-check="light"><i></i>Lighting adequate</li>
-        <li data-check="steady"><i></i>Face steady</li>
+        <li data-check="one"><i></i>One person</li>
+        <li data-check="light"><i></i>Good light</li>
+        <li data-check="steady"><i></i>Steady</li>
       </ul>
     </div>
   </main>
+
+  <footer class="foot">
+    CLARUS · Fairness in visual speech recognition · Hindustan Institute of Technology and Science
+  </footer>
 
   <script src="config.js"></script>
   <script src="logic.js"></script>
