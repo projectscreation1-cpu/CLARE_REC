@@ -45,6 +45,12 @@ function show(id) {
   document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
   const slot = document.querySelector(`#${id} [data-stage]`);
   if (slot) slot.appendChild($('stage-inner'));
+  const steps = [...document.querySelectorAll('#stepper li')];
+  const at = steps.findIndex((li) => li.dataset.step === id);
+  steps.forEach((li, i) => {
+    li.classList.toggle('current', i === at && id !== 'screen-done');
+    li.classList.toggle('done', i < at || id === 'screen-done');
+  });
   window.scrollTo(0, 0);
 }
 
@@ -393,12 +399,22 @@ function setPhase(phase) {
   $('btn-next').textContent = state.index === sentences.length - 1 ? 'Finish' : 'Next Sentence';
 }
 
+const CHECK_SVG = '<svg viewBox="0 0 16 16" width="14" height="14" aria-label="done"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function renderDots() {
+  $('rec-dots').innerHTML = sentences.map((_, n) => {
+    const cls = state.clips[n] ? 'done' : n === state.index ? 'current' : '';
+    return `<li class="${cls}" aria-current="${n === state.index ? 'step' : 'false'}">${state.clips[n] ? CHECK_SVG : n + 1}</li>`;
+  }).join('');
+}
+
 function renderSentence() {
   const i = state.index;
   $('rec-counter').textContent = `Sentence ${i + 1} of ${sentences.length}`;
   $('rec-set').textContent = `Set ${setNumber}`;
   $('rec-progress').style.width = `${(i / sentences.length) * 100}%`;
   $('rec-sentence').textContent = sentences[i];
+  renderDots();
   setStatus(recStatus, 'When all three checks are green, tap <strong>Record</strong> and read the sentence aloud clearly.');
   state.pending = null;
   setPhase('idle');
@@ -566,6 +582,7 @@ async function uploadPending() {
   if (s === 'unsupported') note = '<br>Your browser can’t verify speech, so this clip is marked unverified. For best results, use Chrome or Edge.';
   setStatus(recStatus, `<strong>Uploaded successfully.</strong>${note}`, s === 'pass' ? 'ok' : 'warn');
   $('rec-progress').style.width = `${((state.index + 1) / sentences.length) * 100}%`;
+  renderDots();
   state.pending = null;
   setPhase('uploaded');
 }
@@ -623,8 +640,16 @@ async function finish() {
   }
   state.pending = null;
   stopCamera();
+  renderSummary();
   show('screen-done');
   window.removeEventListener('beforeunload', warnUnload);
+}
+
+function renderSummary() {
+  $('done-summary').innerHTML = state.clips.map((c, n) => {
+    const note = c.verificationStatus === 'pass' ? `${c.durationSec}s` : 'for review';
+    return `<li><b>${n + 1}</b><span>${escapeHtml(c.sentenceText)}</span><em>${escapeHtml(note)}</em></li>`;
+  }).join('');
 }
 
 function warnUnload(e) {
