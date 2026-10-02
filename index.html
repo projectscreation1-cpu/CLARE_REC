@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>CLARUS Recording</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%231f5eff%22/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+
+    <!-- SCREEN 1: WELCOME + CONSENT -->
+    <section id="screen-welcome" class="screen active">
+      <header class="brand">
+        <h1>CLARUS</h1>
+        <p class="sub">Lip-reading fairness study · Hindustan Institute of Technology and Science, AI &amp; DS</p>
+      </header>
+
+      <div class="intro">
+        <p><strong>What is CLARUS?</strong> A final-year research project checking whether AI lip-reading works equally well for everyone, regardless of skin tone, facial hair, lighting or head angle.</p>
+        <p><strong>Why we collect data:</strong> existing datasets are mostly BBC and TED footage and don't represent diverse, real speakers.</p>
+        <p><strong>Why you matter:</strong> every recording helps us measure and reduce bias.</p>
+        <p class="muted">You'll read 5 short sentences aloud to your camera. It takes about 3 minutes.</p>
+      </div>
+
+      <form id="consent-form" novalidate>
+        <label class="field">Full name
+          <input id="f-name" type="text" autocomplete="name" maxlength="80" required />
+        </label>
+        <label class="field">Roll number / ID
+          <input id="f-roll" type="text" autocomplete="off" maxlength="40" required />
+        </label>
+
+        <label class="field">Age group
+          <select id="f-age" required>
+            <option value="">Select…</option>
+            <option>Under 18</option><option>18-24</option><option>25-34</option>
+            <option>35-44</option><option>45-54</option><option>55+</option>
+          </select>
+        </label>
+
+        <label class="field">Gender (self-reported)
+          <select id="f-gender" required>
+            <option value="">Select…</option>
+            <option>Female</option><option>Male</option><option>Other / prefer to self-describe</option>
+          </select>
+        </label>
+
+        <label class="field">Skin tone (self-reported)
+          <select id="f-skin" required>
+            <option value="">Select…</option>
+            <option>Very light</option><option>Light</option><option>Medium</option>
+            <option>Tan</option><option>Brown</option><option>Dark</option>
+          </select>
+        </label>
+
+        <label class="field">Facial hair
+          <select id="f-facial" required>
+            <option value="">Select…</option>
+            <option>None</option><option>Light</option><option>Beard/moustache</option>
+          </select>
+        </label>
+
+        <fieldset class="field">
+          <legend>Wears glasses</legend>
+          <div class="seg">
+            <label><input type="radio" name="glasses" value="Yes" required /> <span>Yes</span></label>
+            <label><input type="radio" name="glasses" value="No" /> <span>No</span></label>
+          </div>
+        </fieldset>
+
+        <label class="check">
+          <input id="f-consent" type="checkbox" required />
+          <span>I agree to be recorded for the CLARUS academic research project. My video will only be used to train and test a lip-reading AI system, will not be shared publicly, and I can request deletion by contacting the team.</span>
+        </label>
+
+        <label class="check" id="guardian-wrap" hidden>
+          <input id="f-guardian" type="checkbox" />
+          <span>A parent/guardian has given permission for this recording.</span>
+        </label>
+
+        <button id="btn-start" type="submit" class="btn primary" disabled>Start</button>
+      </form>
+    </section>
+
+    <!-- SCREEN 2: CAMERA CHECK -->
+    <section id="screen-check" class="screen">
+      <h2>Camera check</h2>
+      <p class="muted">Sit facing the camera in good light and hold your device steady.</p>
+      <div class="stage" data-stage></div>
+      <div id="check-status" class="status" role="status"></div>
+      <button id="btn-continue" class="btn primary" disabled>Continue</button>
+    </section>
+
+    <!-- SCREEN 3: RECORDING -->
+    <section id="screen-record" class="screen">
+      <div class="rec-head">
+        <span id="rec-counter">Sentence 1 of 5</span>
+        <span id="rec-set" class="muted"></span>
+      </div>
+      <div class="progress"><div id="rec-progress"></div></div>
+      <p id="rec-sentence" class="sentence"></p>
+      <div class="stage" data-stage></div>
+      <div id="rec-status" class="status" role="status" aria-live="polite"></div>
+      <div id="rec-actions" class="actions">
+        <button id="btn-record" class="btn primary" disabled>● Record</button>
+        <button id="btn-stop" class="btn danger" hidden>■ Stop</button>
+        <button id="btn-retry-upload" class="btn primary" hidden>Retry upload</button>
+        <button id="btn-rerecord" class="btn" hidden>Re-record This Sentence</button>
+        <button id="btn-next" class="btn primary" hidden>Next Sentence</button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: DONE -->
+    <section id="screen-done" class="screen">
+      <div class="done">
+        <div class="tick" aria-hidden="true">✓</div>
+        <h2>Thank you!</h2>
+        <p>All 5 recordings were uploaded successfully. Your contribution helps make lip-reading AI fairer for everyone.</p>
+        <p class="muted">The camera has been switched off. You can close this page.</p>
+      </div>
+    </section>
+
+    <!-- Shared camera stage: moved between screens 2 and 3 -->
+    <div id="stage-inner" class="stage-inner">
+      <div class="frame">
+        <video id="preview" autoplay muted playsinline></video>
+        <canvas id="rec-canvas" aria-hidden="true"></canvas>
+        <div id="overlay" class="overlay" hidden></div>
+        <div id="timer" class="timer" hidden></div>
+      </div>
+      <ul class="checklist" id="checklist">
+        <li data-check="one"><i></i>Exactly one person in frame</li>
+        <li data-check="light"><i></i>Lighting adequate</li>
+        <li data-check="steady"><i></i>Face steady</li>
+      </ul>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="logic.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
